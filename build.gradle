@@ -1,11 +1,16 @@
 plugins {
     id 'java'
+    //Use for run the application
+    id 'application'
 }
 
 group 'pwPractica1'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
+
+//Main class
+mainClassName = 'pw.practica1/Main'
 
 repositories {
     mavenCentral()
