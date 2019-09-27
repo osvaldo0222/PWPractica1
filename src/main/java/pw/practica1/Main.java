@@ -26,8 +26,8 @@ public class Main {
         Document document = Jsoup.connect(URL).get();
 
         System.out.println("\nA) Lines: " + lineCount(URL));
-        System.out.println("\nB) Parragraphs: " + paragraphsCount(document));
-        System.out.println("\nC) Images: " + imageCount(document));
+        System.out.println("\nB) Paragraphs: " + paragraphsCount(document));
+        System.out.println("\nC) Images inside Paragraphs: " + imageCount(document));
         System.out.println("\nD) Forms: "+ formElements(document).size() + " -> GET: " + getForms(document) + " POST: " + postForms(document));
         System.out.println("\nE) Forms Inputs:" + inputs(document));
         System.out.println("F) Server Response: \n" + postRequest(document));
@@ -63,14 +63,17 @@ public class Main {
     }
 
     private static Elements formElements(Document document){
-        return document.getElementsByTag("form");
+        //Arraylist of <form> tags
+        Elements forms = document.getElementsByTag("form");
+
+        return forms;
     }
 
     private static int getForms(Document document) {
         //Arraylist of <form> tags
         Elements forms = formElements(document);
 
-        //These variables are for count the GET and POST form respectively
+        //This variable count the GET forms
         int countGET = 0;
         //Iterating over <form> tags looking for method attribute
         for (Element form: forms) {
@@ -84,7 +87,7 @@ public class Main {
         //Arraylist of <form> tags
         Elements forms = formElements(document);
 
-        //These variables are for count the GET and POST form respectively
+        //This variable count the POST forms
         int countPOST = 0;
         //Iterating over <form> tags looking for method attribute
         for (Element form: forms) {
@@ -116,7 +119,11 @@ public class Main {
         //Iterating over <form> tags looking for method attribute POST
         for (Element form: formElements(document)) {
             if (form.attr("method").equalsIgnoreCase("POST")){
-                Connection.Response responseText = ((FormElement) form).submit().data("asignatura", "practica1").header("matricula","20161229").execute();
+                Connection.Response responseText = ((FormElement) form)
+                                                    .submit()
+                                                    .data("asignatura", "practica1")
+                                                    .header("matricula","20161229")
+                                                    .execute();
                 response += responseText.body() + "\n";
             }
         }
